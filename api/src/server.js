@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const routes = require("./routes");
 const cors = require("cors");
+const path = require("path");
 const port = 3333;
 const app = express();
 
@@ -22,6 +23,7 @@ mongoose.connect(
 app.use(cors());
 // Para express aceitar o formato de JSON
 app.use(express.json());
+app.use("/files", express.static(path.resolve(__dirname, "..", "uploads")));
 app.use(routes);
 
 app.listen(port, () => console.log(`Example app listening on port port!`));

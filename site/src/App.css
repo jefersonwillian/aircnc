@@ -36,7 +36,7 @@ button {
 }
 
 .content {
-  widows: 100%;
+  width: 100%;
   background: #fff;
   margin-top: 50px;
   border-radius: 4px;
