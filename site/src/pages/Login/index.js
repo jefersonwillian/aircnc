@@ -21,7 +21,7 @@ export default function Login({ history }) {
     <>
       <p>
         Ofereça <strong>spots</strong> para programadores e encontre
-        <strong>talentos</strong>
+        <strong> talentos </strong>
         para sua empresa.
       </p>
 

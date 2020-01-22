@@ -3,8 +3,14 @@ const mongoose = require("mongoose");
 const routes = require("./routes");
 const cors = require("cors");
 const path = require("path");
+
+const socketio = require("socket.io");
+const http = require("http");
+
 const port = 3333;
 const app = express();
+const server = http.Server(app);
+const io = socketio(server);
 
 // Conexao com o banco de dados mongodb
 mongoose.connect(
@@ -15,6 +21,20 @@ mongoose.connect(
   }
 );
 
+const connectedUsers = {};
+
+io.on("connect", socket => {
+  const { user_id } = socket.handshake.query;
+
+  connectedUsers[user_id] = socket.id;
+});
+
+app.use((req, res, next) => {
+  req.io = io;
+  req.connectedUsers = connectedUsers;
+
+  return next();
+});
 // GET, POST, PUTT, DELETE
 // req.query = Acessar query params(para filtro)
 // req.params = Acessar route params (para edição, delete)
@@ -26,4 +46,4 @@ app.use(express.json());
 app.use("/files", express.static(path.resolve(__dirname, "..", "uploads")));
 app.use(routes);
 
-app.listen(port, () => console.log(`Example app listening on port port!`));
+server.listen(port, () => console.log(`Example app listening on port port!`));
